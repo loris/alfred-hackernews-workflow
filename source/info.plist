@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>bundleid</key>
+	<string>com.lorisguignard.hackernews</string>
+	<key>connections</key>
+	<dict>
+		<key>C9C6DA67-FAB2-4488-9297-79E23F984C2E</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>C890C21A-7016-4423-B627-617124C9B24A</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+	</dict>
+	<key>createdby</key>
+	<string>Loris Guignard</string>
+	<key>description</key>
+	<string>Get the Hacker News homepage items</string>
+	<key>name</key>
+	<string>Hacker News</string>
+	<key>objects</key>
+	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>2</integer>
+				<key>escaping</key>
+				<integer>0</integer>
+				<key>keyword</key>
+				<string>hn</string>
+				<key>script</key>
+				<string>import json
+import urllib2
+from xml.etree import ElementTree as ET
+
+uri = 'http://hndroidapi.appspot.com/news/format/json/page/?appid=Alfred'
+data = json.loads(urllib2.urlopen(uri).read())
+
+
+def xml_results(items):
+    xml_items = ET.Element('items')
+    for item in items:
+        xml_item = ET.SubElement(xml_items, 'item')
+        for key in item.keys():
+            if key is 'uid' or key is 'arg':
+                xml_item.set(key, item[key])
+            else:
+                child = ET.SubElement(xml_item, key)
+                child.text = item[key]
+    print ET.tostring(xml_items)
+
+
+def results_list(items):
+    results = []
+    for item in items:
+        if 'item_id' in item:
+            result = parse_item(item)
+            results.append(result)
+    return results
+
+
+def parse_item(item):
+    return {
+        'uid': item['item_id'],
+        'arg': item['url'],
+        'title': item['title'],
+        'subtitle': item['description'],
+        'icon': 'icon.png'
+    }
+
+
+print(xml_results(results_list(data['items'])))
+</string>
+				<key>subtext</key>
+				<string>Get the Hacker News homepage items</string>
+				<key>title</key>
+				<string>Hacker News</string>
+				<key>type</key>
+				<integer>3</integer>
+				<key>withspace</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>C9C6DA67-FAB2-4488-9297-79E23F984C2E</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>applescript</key>
+				<string>on alfred_script(q)
+  open location q
+end alfred_script</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.applescript</string>
+			<key>uid</key>
+			<string>C890C21A-7016-4423-B627-617124C9B24A</string>
+		</dict>
+	</array>
+	<key>uidata</key>
+	<dict>
+		<key>C890C21A-7016-4423-B627-617124C9B24A</key>
+		<dict>
+			<key>ypos</key>
+			<real>10</real>
+		</dict>
+		<key>C9C6DA67-FAB2-4488-9297-79E23F984C2E</key>
+		<dict>
+			<key>ypos</key>
+			<real>10</real>
+		</dict>
+	</dict>
+	<key>webaddress</key>
+	<string>http://www.lorisguignard.com</string>
+</dict>
+</plist>
