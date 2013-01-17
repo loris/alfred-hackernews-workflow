@@ -10,7 +10,7 @@
 		<array>
 			<dict>
 				<key>destinationuid</key>
-				<string>C890C21A-7016-4423-B627-617124C9B24A</string>
+				<string>E4D7EF60-EA59-4CD5-83CD-9C1EE6BEED0B</string>
 				<key>modifiers</key>
 				<integer>0</integer>
 				<key>modifiersubtext</key>
@@ -36,48 +36,10 @@
 				<key>keyword</key>
 				<string>hn</string>
 				<key>script</key>
-				<string>import json
-import urllib2
-from xml.etree import ElementTree as ET
+				<string>from hn import get_items
 
 uri = 'http://hndroidapi.appspot.com/news/format/json/page/?appid=Alfred'
-data = json.loads(urllib2.urlopen(uri).read())
-
-
-def xml_results(items):
-    xml_items = ET.Element('items')
-    for item in items:
-        xml_item = ET.SubElement(xml_items, 'item')
-        for key in item.keys():
-            if key is 'uid' or key is 'arg':
-                xml_item.set(key, item[key])
-            else:
-                child = ET.SubElement(xml_item, key)
-                child.text = item[key]
-    print ET.tostring(xml_items)
-
-
-def results_list(items):
-    results = []
-    for item in items:
-        if 'item_id' in item:
-            result = parse_item(item)
-            results.append(result)
-    return results
-
-
-def parse_item(item):
-    return {
-        'uid': item['item_id'],
-        'arg': item['url'],
-        'title': item['title'],
-        'subtitle': item['description'],
-        'icon': 'icon.png'
-    }
-
-
-print(xml_results(results_list(data['items'])))
-</string>
+print(get_items(uri))</string>
 				<key>subtext</key>
 				<string>Get the Hacker News homepage items</string>
 				<key>title</key>
@@ -95,25 +57,27 @@ print(xml_results(results_list(data['items'])))
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>applescript</key>
-				<string>on alfred_script(q)
-  open location q
-end alfred_script</string>
+				<key>plusspaces</key>
+				<false/>
+				<key>url</key>
+				<string>{query}</string>
+				<key>utf8</key>
+				<true/>
 			</dict>
 			<key>type</key>
-			<string>alfred.workflow.action.applescript</string>
+			<string>alfred.workflow.action.openurl</string>
 			<key>uid</key>
-			<string>C890C21A-7016-4423-B627-617124C9B24A</string>
+			<string>E4D7EF60-EA59-4CD5-83CD-9C1EE6BEED0B</string>
 		</dict>
 	</array>
 	<key>uidata</key>
 	<dict>
-		<key>C890C21A-7016-4423-B627-617124C9B24A</key>
+		<key>C9C6DA67-FAB2-4488-9297-79E23F984C2E</key>
 		<dict>
 			<key>ypos</key>
 			<real>10</real>
 		</dict>
-		<key>C9C6DA67-FAB2-4488-9297-79E23F984C2E</key>
+		<key>E4D7EF60-EA59-4CD5-83CD-9C1EE6BEED0B</key>
 		<dict>
 			<key>ypos</key>
 			<real>10</real>
