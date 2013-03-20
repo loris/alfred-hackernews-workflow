@@ -1,5 +1,6 @@
 import json
 import urllib2
+import time
 from xml.etree import ElementTree as ET
 
 
@@ -30,7 +31,7 @@ def generate_xml(items):
 
 def parse_item(item):
     return {
-        'uid': item['item_id'],
+        'uid': '%s%s' % (item['item_id'], time.time()),
         'arg': item['url'],
         'title': item['title'],
         'subtitle': item['description'],
