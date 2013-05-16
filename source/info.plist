@@ -38,7 +38,7 @@
 				<key>script</key>
 				<string>from hn import get_items
 
-uri = 'http://hndroidapi.appspot.com/news/format/json/page/?appid=Alfred'
+uri = 'http://hndroidapi.appspot.com/news/format/json/page/?appid=&amp;callback=&amp;guid=a21d75c1e58e4c86ae6ea6369b2c4172'
 print(get_items(uri))</string>
 				<key>subtext</key>
 				<string>Get the Hacker News homepage items</string>
