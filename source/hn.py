@@ -4,13 +4,14 @@ import time
 from xml.etree import ElementTree as ET
 
 
-def get_items(uri):
+def get_items(uri, query=None):
     items = []
     data = json.loads(urllib2.urlopen(uri).read())
     for item in data['items']:
-        if 'item_id' in item:
-            result = parse_item(item)
-            items.append(result)
+        if 'id' in item and 'title' in item:
+            if query is None or query.lower() in item['title'].lower():
+                result = parse_item(item)
+                items.append(result)
 
     xml = generate_xml(items)
     return xml
@@ -26,14 +27,14 @@ def generate_xml(items):
             else:
                 child = ET.SubElement(xml_item, key)
                 child.text = item[key]
-    print ET.tostring(xml_items)
+    print(ET.tostring(xml_items))
 
 
 def parse_item(item):
     return {
-        'uid': '%s%s' % (item['item_id'], time.time()),
+        'uid': '%s%s' % (item['id'], time.time()),
         'arg': item['url'],
         'title': item['title'],
-        'subtitle': item['description'],
+        'subtitle': '%s points | %s comments | %s | %s' % (item['points'], item['commentCount'], item['postedAgo'], item['postedBy']),
         'icon': 'icon.png'
     }
